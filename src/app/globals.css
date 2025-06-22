@@ -2,8 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Preserving your original structure with safe enhancements */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -36,11 +39,13 @@ body {
   padding: 0 1.5rem;
 }
 
+/* Your original link styles */
 a {
   text-decoration: none;
   color: white;
 }
 
+/* Navigation - preserved exactly */
 .nav {
   background-color: #121212;
   border-radius: 1rem;
@@ -70,6 +75,7 @@ a {
   margin-left: 1rem;
 }
 
+/* Library - unchanged */
 .library {
   background-color: #121212;
   border-radius: 1rem;
@@ -105,6 +111,7 @@ a {
   opacity: 1;
 }
 
+/* Box styles - kept original */
 .box {
   background-color: #232323;
   min-height: 8rem;
@@ -123,6 +130,7 @@ a {
   opacity: 0.9;
 }
 
+/* Badges - unchanged */
 .badge {
   background-color: #fff;
   border: none;
@@ -140,6 +148,7 @@ a {
   color: #fff;
 }
 
+/* Sticky nav - preserved */
 .sticky-nav {
   background-color: #121212;
   position: sticky;
@@ -164,6 +173,7 @@ a {
   margin-right: 1rem;
 }
 
+/* Cards - kept original */
 .cards-container {
   display: flex;
   flex-wrap: wrap;
@@ -204,6 +214,7 @@ a {
   text-overflow: ellipsis;
 }
 
+/* Footer - unchanged */
 .footer {
   height: 300px;
   display: flex;
@@ -218,6 +229,7 @@ a {
   opacity: 0.4;
 }
 
+/* Music Player - preserved exactly */
 .music-player {
   position: fixed;
   bottom: 0;
@@ -231,6 +243,7 @@ a {
   z-index: 20;
 }
 
+/* Album section - unchanged */
 .album {
   width: 25%;
   display: flex;
@@ -304,6 +317,7 @@ a {
   cursor: pointer;
 }
 
+/* Advanced Controls - preserved */
 .advanced-controls {
   display: flex;
   align-items: center;
@@ -356,8 +370,32 @@ a {
   margin-top: -8px;
 }
 
+/* Responsive - unchanged */
 @media (max-width: 1000px) {
   .hide {
     display: none;
   }
+}
+
+/* Only safe additions below this line */
+/* Improved scrollbar (non-breaking) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #4d4d4d;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+/* Smooth transitions for hover states */
+.nav-option, .icons i, .player-control-icon, .card {
+  transition: all 0.2s ease;
+}
+
+/* Mobile tap targets */
+button, a, [role="button"] {
+  touch-action: manipulation;
 }

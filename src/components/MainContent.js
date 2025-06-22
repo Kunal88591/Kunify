@@ -1,17 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const MainContent = ({ setCurrentSong, setSongs, songs }) => {
+
+
+const MainContent = ({ setCurrentSong, setSongs, songs, currentSong }) => {
   const fileInputRef = useRef(null);
 
-  // Fetch songs from API and set them as array
   const fetchSongs = async () => {
     try {
-      const response = await fetch('/api/songs');
-      const data = await response.json();
-      setSongs(Array.isArray(data) ? data : []);
+      const response = await fetch('/api/songs?limit=100');
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.success) {
+        setSongs(Array.isArray(result.data) ? result.data : []);
+      } else {
+        throw new Error(result.error || 'Unknown API error');
+      }
     } catch (error) {
       console.error('Error fetching songs:', error);
       setSongs([]);
+      // Optional: Show error to user
+      // alert(`Failed to load songs: ${error.message}`);
     }
   };
 
@@ -25,38 +35,49 @@ const MainContent = ({ setCurrentSong, setSongs, songs }) => {
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
-    console.log('Selected file:', file); // Debug
-    
-    if (!file || !file.type.startsWith('audio/')) {
-      console.log('Invalid file or file type');
-      return;
-    }
-  
+    if (!file) return;
+
     const formData = new FormData();
     formData.append('file', file);
-  
+
     try {
-      console.log('Uploading file...');
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
-  
-      console.log('Upload response status:', response.status);
-      
+
       if (response.ok) {
-        const newSong = await response.json();
-        console.log('New song received:', newSong);
-        setSongs(prev => [newSong, ...(Array.isArray(prev) ? prev : [])]);
-      } else {
-        const errorData = await response.json();
-        console.error('Upload failed:', errorData);
+        const result = await response.json();
+        if (result.success) {
+          setSongs(prev => [result.data, ...(Array.isArray(prev) ? prev : [])]);
+        }
       }
     } catch (error) {
       console.error('Upload error:', error);
+      // Optional: Show error to user
+      // alert(`Upload failed: ${error.message}`);
     }
   };
-  
+
+  const handleDeleteSong = async (songId, e) => {
+    e.stopPropagation(); // Prevent triggering song selection
+    try {
+      const response = await fetch(`/api/delete/${songId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.status === 204) {
+        setSongs(prev => prev.filter(song => song.id !== songId));
+        // If deleted song was playing, clear current song
+        if (currentSong && currentSong.id === songId) {
+          setCurrentSong(null);
+        }
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Failed to delete song');
+    }
+  };
 
   return (
     <div className="main-content">
@@ -75,7 +96,6 @@ const MainContent = ({ setCurrentSong, setSongs, songs }) => {
         </div>
       </div>
 
-      {/* Upload Button */}
       <div style={{ margin: '1rem 0' }}>
         <button
           onClick={handleUploadClick}
@@ -106,30 +126,21 @@ const MainContent = ({ setCurrentSong, setSongs, songs }) => {
               className="card-img"
               alt="Album Cover"
             />
-            <p className="card-title">{song.title}</p>
-            <p className="card-info">{song.artist}</p>
+            <div className="card-header">
+              <p className="card-title">{song.title}</p>
+              <button 
+                className="delete-button"
+                onClick={(e) => handleDeleteSong(song.id, e)}
+              >
+                <i className="fa-solid fa-trash"></i>
+              </button>
+            </div>
+            <p className="card-info">{song.artist || 'Unknown Artist'}</p>
           </div>
         ))}
       </div>
 
-      {/* Other sections (Recently Played, Trending, etc.) */}
-      <h2>Recently Played</h2>
-      <div className="cards-container">
-        <div className="card">
-          <img src="/media/default_cover.jpg" />
-          <p className="card-title">Top 50 - Global</p>
-          <p className="card-info">Your daily updates of the most played ...</p>
-        </div>
-      </div>
-
-      <h2>Trending now near you</h2>
-      <div className="cards-container">
-        {/* ... other cards ... */}
-      </div>
-
-      <div className="footer">
-        <div className="line"></div>
-      </div>
+      {/* Other sections (Recently Played, Trending, etc.) can go here */}
     </div>
   );
 };

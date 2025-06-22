@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { supabase } from '../app/lib/supabase'; // Corrected import path
 
 const MusicPlayer = ({ currentSong }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -9,26 +8,29 @@ const MusicPlayer = ({ currentSong }) => {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    if (currentSong && audioRef.current) {
-      // Get secure public URL from Supabase
-      const { data } = supabase.storage
-        .from('music')
-        .getPublicUrl(currentSong.file_path);
-      audioRef.current.src = data.publicUrl;
+    if (currentSong && audioRef.current && currentSong.public_url) {
+      audioRef.current.src = currentSong.public_url;
       audioRef.current.load();
+  
+      audioRef.current.onerror = (e) => {
+        console.error('Audio error:', e.target.error, currentSong.public_url);
+      };
+  
       setIsPlaying(false);
       setCurrentTime(0);
     }
   }, [currentSong]);
+  
 
   const togglePlay = () => {
     if (!audioRef.current) return;
+
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      audioRef.current.play().catch(error => {
-        console.error('Playback failed:', error);
-      });
+      audioRef.current
+        .play()
+        .catch((error) => console.error('Playback failed:', error));
     }
     setIsPlaying(!isPlaying);
   };
@@ -71,7 +73,7 @@ const MusicPlayer = ({ currentSong }) => {
         />
         <div className="album-text">
           <p>{currentSong ? currentSong.title : 'No song selected'}</p>
-          <p>{currentSong ? currentSong.artist : 'Unknown Artist'}</p>
+          <p>{currentSong ? currentSong.artist || 'Unknown Artist' : 'Unknown Artist'}</p>
         </div>
       </div>
 
@@ -80,13 +82,13 @@ const MusicPlayer = ({ currentSong }) => {
           ref={audioRef}
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={() => setDuration(audioRef.current?.duration || 0)}
-          onError={(e) => console.error('Audio error:', e.target.error)}
+          onError={(e) => console.error('Audio error:', e?.target?.error || 'Unknown error')}
         />
         <div className="player-controls">
           <img src="/media/player_icon1.png" className="player-control-icon" alt="Previous" />
           <img src="/media/player_icon2.png" className="player-control-icon" alt="Next" />
           <img
-            src={isPlaying ? "/media/player_icon3.png" : "/media/player_icon3.png"}
+            src={isPlaying ? "/media/pause_icon3.png" : "/media/player_icon3.png"}
             className="player-control-icon"
             style={{ opacity: 1, height: '2rem' }}
             onClick={togglePlay}

@@ -5,11 +5,24 @@ const montserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-montserrat',
   weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
 });
 
+// Add viewport export for themeColor and other viewport options
+export const viewport = {
+  themeColor: '#000000', // Use your preferred color (e.g., black for Spotify-like)
+  width: 'device-width',
+  initialScale: 1,
+  // ...other viewport options as needed
+};
+
+// Metadata export (do not include themeColor here)
 export const metadata = {
-  title: 'Spotify - Web Player: Music for everyone',
-  description: 'Music for everyone',
+  title: {
+    default: 'Spotify - Web Player: Music for everyone',
+    template: '%s | Spotify Web Player'
+  },
+  description: 'Stream millions of songs with Spotify Web Player',
 };
 
 export default function RootLayout({ children }) {
@@ -23,9 +36,13 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
-        <link rel="icon" href="/media/logo.png" />
+        <link rel="icon" href="/favicon.ico" />
       </head>
-      <body>{children}</body>
+      <body className="app-layout">
+        <div className="app-container">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
