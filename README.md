@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎵 Kunify - The Modern Web Music Player
 
-## Getting Started
+**Kunify** is a sleek, feature-rich, and fully responsive music player web application built using **Next.js (App Router)** and **Supabase**.  
+Inspired by modern streaming platforms like Spotify, Kunify allows users to **upload**, **manage**, and **stream audio files** directly from the browser — all with a clean and intuitive UI.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🎧 When you're debugging audio errors at 2 AM...
+> *"The file is there. The path is correct. The code is clean. So why the hell isn't it playing?!"*
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✨ Features
 
-To learn more about Next.js, take a look at the following resources:
+- 🎧 **Audio Playback** — Stream songs with smooth controls: play, pause, seek, and volume adjustment.
+- 📤 **Song Upload** — Upload audio files (MP3, WAV, M4A, OGG, AAC) with smart validations.
+- 🗂️ **Library Management** — View, delete, and organize uploaded songs seamlessly.
+- 🌐 **Supabase Integration** — Uses Supabase Storage for file hosting and PostgreSQL for metadata.
+- 💻 **Responsive UI** — Fully optimized for mobile and desktop devices.
+- 🎨 **Elegant Design** — Clean, modern interface with Montserrat typography.
+- 🚀 **Deployed on Vercel** — Fast, scalable deployment using Next.js infrastructure.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Tech Stack
 
-## Deploy on Vercel
+| Tech                                      | Purpose                              |
+|-------------------------------------------|--------------------------------------|
+| [Next.js 14+](https://nextjs.org/)        | React framework with App Router      |
+| [Supabase](https://supabase.io/)          | Backend, Auth, Storage, and DB       |
+| [React](https://react.dev/)               | Frontend library                     |
+| [Font Awesome](https://fontawesome.com/)  | Icon library                         |
+| [Google Fonts (Montserrat)](https://fonts.google.com/specimen/Montserrat) | Stylish typography |
+| [Vercel](https://vercel.com/)             | Deployment platform                  |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📁 Project Structure
+
+### 🔧 Prerequisites
+
+- ✅ Node.js v18+ installed
+- ✅ Supabase project set up
+- ✅ Storage bucket named: `music`
+- ✅ PostgreSQL table in Supabase: `songs`
+
+---
+
+## 🧪 API Routes Overview
+
+| Method | Route              | Description                  |
+|--------|-------------------|------------------------------|
+| POST   | `/api/upload`     | Upload a new audio file      |
+| GET    | `/api/songs`      | Fetch all uploaded songs     |
+| DELETE | `/api/delete/:id` | Delete a specific song by ID |
+
+---
+
+## 📷 Screenshots
+
+ **Coming soon**  
+
+
+---
+
+## 📌 Future Enhancements
+
+- ✅ Search & filter songs  
+- ✅ Playlist support  
+- ⏳ Drag-and-drop upload interface  
+- ⏳ Like & favorite functionality  
+- ⏳ User authentication & private storage  
+
+---
+
+## 🧑‍💻 Author
+
+**Kunal Meena**  
+📫 [kunalofficial8859@gmail.com](mailto:kunalofficial8859@gmail.com)  
+🔗 [LinkedIn](https://linkedin.com/in/kunalmeena) • [GitHub](https://github.com/Kunal88591)
+
+---
+
+> 🧠 *"Good code is its own best documentation — but a cool meme never hurts."*  
+> ⭐ **Star this repo** if you found it helpful — your support fuels future updates!
