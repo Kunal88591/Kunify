@@ -25,7 +25,6 @@ const Sidebar = () => {
   const handleNavigation = (view) => {
     if (!isMounted) return;
     setActiveView(view);
-    // Disabled routing logic intentionally
   };
 
   if (!isMounted) {
@@ -43,7 +42,6 @@ const Sidebar = () => {
 
   return (
     <aside className="sidebar" role="navigation" aria-label="Main Navigation">
-      {/* Logo */}
       <div className="sidebar-brand">
         <h1 className="logo" onClick={() => handleNavigation('home')}>
           <i className="fas fa-headphones-alt" aria-hidden="true"></i>
@@ -51,7 +49,6 @@ const Sidebar = () => {
         </h1>
       </div>
 
-      {/* Main Navigation */}
       <nav className="sidebar-nav">
         {navItems.slice(0, 2).map((item) => (
           <button
@@ -66,7 +63,6 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* Library Section */}
       <section className="library-section" aria-label="Your Library">
         <div className="library-header">
           <button
@@ -113,13 +109,12 @@ const Sidebar = () => {
         </div>
       </section>
 
-      {/* User Profile */}
       <div className="user-profile">
         <div className="profile-avatar">
-          <img src="/media/default-cover.jpg" alt="User profile" />
+          <img src="logo.png" alt="User profile" />
         </div>
         <div className="profile-info">
-          <span className="profile-name">User Name</span>
+          <span className="profile-name">Welcome - GUEST</span>
           <button className="profile-settings" onClick={() => handleNavigation('settings')}>
             <i className="fas fa-cog"></i>
           </button>

@@ -1,9 +1,6 @@
 'use client';
 
-
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-
 import './MusicPlayer.css';
 import { usePlayer } from '@/context/PlayerContext';
 
@@ -32,8 +29,8 @@ const MusicPlayer = () => {
   useEffect(() => {
     const loadSong = async () => {
       if (!currentSong?.public_url) return;
+      const audio = audioRef.current;
       try {
-        const audio = audioRef.current;
         audio.src = currentSong.public_url;
         await audio.load();
         setCurrentTime(0);
@@ -126,8 +123,8 @@ const MusicPlayer = () => {
 
   const playNextSong = useCallback(() => {
     if (!songs.length) return;
-    const currentIndex = songs.findIndex((s) => s.id === currentSong?.id);
-    let nextIndex = isShuffle
+    const currentIndex = songs.findIndex(s => s.id === currentSong?.id);
+    const nextIndex = isShuffle
       ? Math.floor(Math.random() * songs.length)
       : (currentIndex + 1) % songs.length;
     updatePlayerState({ currentSong: songs[nextIndex] });
@@ -139,7 +136,7 @@ const MusicPlayer = () => {
       audioRef.current.currentTime = 0;
       return;
     }
-    const currentIndex = songs.findIndex((s) => s.id === currentSong?.id);
+    const currentIndex = songs.findIndex(s => s.id === currentSong?.id);
     const prevIndex = (currentIndex - 1 + songs.length) % songs.length;
     updatePlayerState({ currentSong: songs[prevIndex] });
   }, [songs, currentSong, currentTime, updatePlayerState]);
@@ -197,7 +194,9 @@ const MusicPlayer = () => {
       <div className="player-controls">
         <div className="progress-container" onClick={handleSeek} ref={progressBarRef}>
           <div className="progress-bar" style={{ width: `${(currentTime / duration) * 100}%` }} />
-          <span className="time-display">{formatTime(currentTime)} / {formatTime(duration)}</span>
+          <span className="time-display">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </span>
         </div>
 
         <div className="control-group">
@@ -236,7 +235,10 @@ const MusicPlayer = () => {
               className="volume-slider"
             />
           </div>
-          <button onClick={() => setShowPlaylist(!showPlaylist)} className={`control-btn ${showPlaylist ? 'active' : ''}`}>
+          <button
+            onClick={() => setShowPlaylist(!showPlaylist)}
+            className={`control-btn ${showPlaylist ? 'active' : ''}`}
+          >
             <i className="fas fa-bars" />
           </button>
         </div>

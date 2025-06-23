@@ -1,25 +1,20 @@
-/* =============== 🌍 Global Styles & Design Tokens =============== */
 :root {
-  /* =============== 🎨 Extended Color System =============== */
-  /* Primary Purple */
   --primary-50: #faf5ff;
   --primary-100: #f3e8ff;
   --primary-200: #e9d5ff;
   --primary-300: #d8b4fe;
-  --primary-400: #c084fc; /* Lighter primary */
-  --primary-500: #8a2be2; /* Base primary */
+  --primary-400: #c084fc;
+  --primary-500: #8a2be2;
   --primary-600: #7c22d1;
   --primary-700: #6a1bb8;
   --primary-800: #581c87;
   --primary-900: #3b0764;
 
-  /* Secondary Green */
-  --secondary-400: #00fa9a; /* Base secondary */
+  --secondary-400: #00fa9a;
   --secondary-500: #00e08b;
   --secondary-600: #00c67c;
   --secondary-700: #00a86b;
 
-  /* Extended Neutrals */
   --neutral-50: #fafafa;
   --neutral-100: #f5f5f5;
   --neutral-200: #e5e5e5;
@@ -31,38 +26,35 @@
   --neutral-800: #262626;
   --neutral-900: #171717;
 
-  /* Semantic Colors */
   --error-400: #ef4444;
   --success-400: #10b981;
   --warning-400: #f59e0b;
   --info-400: #3b82f6;
 
-  /* =============== 📐 Enhanced Spacing System =============== */
-  --space-4xs: 0.125rem;  /* 2px */
-  --space-3xs: 0.25rem;   /* 4px */
-  --space-2xs: 0.5rem;    /* 8px */
-  --space-xs: 0.75rem;    /* 12px */
-  --space-sm: 1rem;       /* 16px */
-  --space-md: 1.5rem;     /* 24px */
-  --space-lg: 2rem;       /* 32px */
-  --space-xl: 2.5rem;     /* 40px */
-  --space-2xl: 3rem;      /* 48px */
-  --space-3xl: 4rem;      /* 64px */
+  --space-4xs: 0.125rem;
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
 
-  /* =============== ✒️ Typography System =============== */
   --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
   --font-mono: 'Roboto Mono', monospace;
-  
-  --text-xs: 0.75rem;     /* 12px */
-  --text-sm: 0.875rem;    /* 14px */
-  --text-base: 1rem;      /* 16px */
-  --text-lg: 1.125rem;    /* 18px */
-  --text-xl: 1.25rem;     /* 20px */
-  --text-2xl: 1.5rem;     /* 24px */
-  --text-3xl: 1.875rem;   /* 30px */
-  --text-4xl: 2.25rem;    /* 36px */
-  --text-5xl: 3rem;       /* 48px */
-  --text-6xl: 3.75rem;    /* 60px */
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
 
   --font-thin: 100;
   --font-light: 300;
@@ -78,13 +70,12 @@
   --leading-normal: 1.5;
   --leading-relaxed: 1.625;
 
-  /* =============== 🖼️ Enhanced Borders & Shadows =============== */
-  --radius-xs: 0.125rem;  /* 2px */
-  --radius-sm: 0.25rem;   /* 4px */
-  --radius-md: 0.5rem;    /* 8px */
-  --radius-lg: 0.75rem;   /* 12px */
-  --radius-xl: 1rem;      /* 16px */
-  --radius-2xl: 1.5rem;   /* 24px */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
   --radius-full: 9999px;
 
   --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -96,7 +87,6 @@
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
   --shadow-primary: 0 0 0 3px rgba(138, 43, 226, 0.3);
 
-  /* =============== ⏱️ Motion System =============== */
   --transition-none: 0s;
   --transition-fastest: 50ms ease;
   --transition-faster: 100ms ease;
@@ -107,7 +97,6 @@
   --transition-bounce: cubic-bezier(0.68, -0.6, 0.32, 1.6);
   --transition-in-out: cubic-bezier(0.45, 0, 0.55, 1);
 
-  /* =============== 🌓 Theme Variables =============== */
   --color-bg: var(--neutral-900);
   --color-bg-secondary: var(--neutral-800);
   --color-bg-tertiary: var(--neutral-700);
@@ -118,7 +107,6 @@
   --color-border-secondary: rgba(255, 255, 255, 0.05);
 }
 
-/* =============== 🌞 Light Theme =============== */
 [data-theme="light"] {
   --color-bg: var(--neutral-50);
   --color-bg-secondary: var(--neutral-100);
@@ -130,7 +118,6 @@
   --color-border-secondary: rgba(0, 0, 0, 0.05);
 }
 
-/* =============== 📱 Base Reset & Styles =============== */
 *,
 *::before,
 *::after {
@@ -158,7 +145,6 @@ body {
   overflow-x: hidden;
 }
 
-/* =============== 🖼️ Layout System =============== */
 .main-layout {
   display: grid;
   grid-template:
@@ -185,7 +171,7 @@ body {
   width: calc(100% - 240px);
   position: relative;
   z-index: 1;
-  min-height: calc(100dvh - 90px); /* Account for player height */
+  min-height: calc(100dvh - 90px);
   overflow-y: auto;
 }
 
@@ -195,11 +181,11 @@ body {
   position: relative;
 }
 
-/* =============== 📱 Responsive Layout =============== */
 @media (max-width: 1024px) {
   .sidebar {
     width: 200px;
   }
+
   .main-content-wrapper {
     margin-left: 200px;
     width: calc(100% - 200px);
@@ -212,23 +198,22 @@ body {
       "main" 1fr
       "player" auto / 1fr;
   }
-  
+
   .sidebar {
     transform: translateX(-100%);
     box-shadow: var(--shadow-xl);
   }
-  
+
   .sidebar.open {
     transform: translateX(0);
   }
-  
+
   .main-content-wrapper {
     margin-left: 0;
     width: 100%;
   }
 }
 
-/* =============== 🍔 Mobile Menu Components =============== */
 .mobile-menu-toggle {
   display: none;
   position: fixed;
@@ -245,15 +230,15 @@ body {
   cursor: pointer;
   transition: all var(--transition-fast);
   box-shadow: var(--shadow-md);
-  
-  &:hover {
-    background: var(--primary-400);
-    transform: scale(1.05);
-  }
-  
-  &:active {
-    transform: scale(0.95);
-  }
+}
+
+.mobile-menu-toggle:hover {
+  background: var(--primary-400);
+  transform: scale(1.05);
+}
+
+.mobile-menu-toggle:active {
+  transform: scale(0.95);
 }
 
 .sidebar-overlay {
@@ -280,7 +265,6 @@ body {
   }
 }
 
-/* =============== ✒️ Typography System =============== */
 h1, h2, h3, h4, h5, h6 {
   margin: 0 0 var(--space-sm);
   font-weight: var(--font-semibold);
@@ -305,20 +289,19 @@ a {
   text-decoration: none;
   transition: all var(--transition-fast);
   outline: none;
-  
-  &:hover {
-    color: var(--primary-300);
-    text-decoration: underline;
-  }
-  
-  &:focus-visible {
-    outline: 2px solid var(--primary-400);
-    outline-offset: 2px;
-    border-radius: var(--radius-sm);
-  }
 }
 
-/* =============== 🛠️ Utility Classes =============== */
+a:hover {
+  color: var(--primary-300);
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--primary-400);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 .container {
   width: 100%;
   max-width: 1600px;
@@ -329,32 +312,32 @@ a {
 .flex {
   display: flex;
   gap: var(--space-sm);
-  
-  &-center {
-    align-items: center;
-    justify-content: center;
-  }
-  
-  &-col {
-    flex-direction: column;
-  }
-  
-  &-wrap {
-    flex-wrap: wrap;
-  }
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .grid {
   display: grid;
   gap: var(--space-sm);
-  
-  &-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  &-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .text-gradient {
@@ -387,7 +370,6 @@ a {
   margin-left: calc(50% - 50vw);
 }
 
-/* =============== 🎛️ Scrollbar Styles =============== */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -402,26 +384,25 @@ a {
   background: var(--primary-600);
   border-radius: var(--radius-full);
   border: 2px solid var(--color-bg-secondary);
-  
-  &:hover {
-    background: var(--primary-500);
-  }
 }
 
-/* =============== 🚀 Animation System =============== */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-500);
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 @keyframes slideUp {
-  from { 
-    transform: translateY(20px); 
-    opacity: 0; 
+  from {
+    transform: translateY(20px);
+    opacity: 0;
   }
-  to { 
-    transform: translateY(0); 
-    opacity: 1; 
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
@@ -442,7 +423,6 @@ a {
   animation: pulse 2s var(--transition-in-out) infinite;
 }
 
-/* =============== ♿ Accessibility Features =============== */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -460,7 +440,6 @@ a {
   border-radius: var(--radius-sm);
 }
 
-/* =============== 🎵 Audio Element Styles =============== */
 .audio-element {
   position: absolute;
   width: 0;
@@ -469,7 +448,6 @@ a {
   pointer-events: none;
 }
 
-/* =============== 🖥️ Print Styles =============== */
 @media print {
   body {
     background: white !important;
@@ -477,16 +455,16 @@ a {
     font-size: 12pt;
     line-height: 1.5;
   }
-  
+
   .no-print {
     display: none !important;
   }
-  
+
   a {
     color: #0000ee;
     text-decoration: underline;
   }
-  
+
   .main-content-wrapper {
     margin-left: 0 !important;
     width: 100% !important;

@@ -20,17 +20,17 @@ export function PlayerProvider({ children }) {
   }, []);
 
   const setCurrentSong = useCallback((song) => {
-    setPlayerState(prev => ({
+    setPlayerState((prev) => ({
       ...prev,
       currentSong: song,
-      isPlaying: true // auto-play on song click
+      isPlaying: true,
     }));
   }, []);
 
   const setIsPlaying = useCallback((isPlaying) => {
-    setPlayerState(prev => ({
+    setPlayerState((prev) => ({
       ...prev,
-      isPlaying
+      isPlaying,
     }));
   }, []);
 
@@ -40,7 +40,7 @@ export function PlayerProvider({ children }) {
         ...playerState,
         updatePlayerState,
         setCurrentSong,
-        setIsPlaying
+        setIsPlaying,
       }}
     >
       {children}

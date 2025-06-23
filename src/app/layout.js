@@ -1,9 +1,11 @@
-// This is a Server Component by default (no 'use client')
+
 
 import './globals.css';
 import { Montserrat } from 'next/font/google';
 import { PlayerProvider } from '@/context/PlayerContext';
 import ThemeInitializer from '@/components/ThemeInitializer';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 const montserrat = Montserrat({
   subsets: ['latin'],

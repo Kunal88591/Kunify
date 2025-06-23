@@ -11,17 +11,18 @@
 .music-player {
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 290px;
   right: 0;
   z-index: 999;
   background: var(--player-bg);
   border-top: 1px solid var(--border-color);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-  padding: 0.6rem 1rem;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+  padding: 0.4rem 0.8rem 0.3rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.3rem;
   transition: all 0.3s ease;
+  font-family: sans-serif;
 }
 
 .music-player.hidden {
@@ -30,17 +31,16 @@
   visibility: hidden;
 }
 
-/* Top section */
 .player-top-section {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .album-art img {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
   object-fit: cover;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .song-info h3 {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   margin: 0;
   color: var(--text-primary);
   white-space: nowrap;
@@ -68,18 +68,17 @@
 }
 
 .song-info p {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   margin: 0;
   color: var(--text-secondary);
 }
 
-/* Progress */
 .progress-container {
-  height: 4px;
+  height: 3px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
-  position: relative;
   cursor: pointer;
+  position: relative;
 }
 
 .progress-bar {
@@ -90,38 +89,39 @@
 }
 
 .time-display {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
   display: flex;
   justify-content: space-between;
-  color: var(--text-secondary);
+  margin-top: 0.15rem;
+  padding: 0 0.2rem;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   margin-top: 0.2rem;
 }
 
-/* Controls */
-.control-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.8rem;
-}
-
 .control-btn {
-  width: 34px;
-  height: 34px;
+  width: 26px;
+  height: 26px;
+  font-size: 0.85rem;
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  font-size: 1rem;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, color 0.2s;
+  border-radius: 50%;
+  transition: color 0.2s, background 0.2s;
 }
 
 .control-btn:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .control-btn.active {
@@ -129,14 +129,14 @@
 }
 
 .play-btn {
-  width: 44px;
-  height: 44px;
-  font-size: 1.2rem;
+  width: 34px;
+  height: 34px;
+  font-size: 1rem;
   background: linear-gradient(to right, var(--primary-accent), var(--secondary-accent));
   color: white;
   border: none;
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
+  box-shadow: 0 0 8px rgba(138, 43, 226, 0.4);
   transition: transform 0.2s ease;
 }
 
@@ -144,16 +144,15 @@
   transform: scale(1.05);
 }
 
-/* Volume */
 .volume-control {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .volume-slider {
-  width: 70px;
-  height: 4px;
+  width: 60px;
+  height: 3px;
   background: rgba(255, 255, 255, 0.15);
   appearance: none;
   border-radius: 2px;
@@ -162,49 +161,47 @@
 
 .volume-slider::-webkit-slider-thumb {
   appearance: none;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: white;
 }
 
-/* Lyrics */
 .lyrics-container {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
-  max-height: 100px;
+  max-height: 90px;
   overflow-y: auto;
-  padding: 0.6rem;
+  padding: 0.5rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 6px;
 }
 
 .lyrics-container h4 {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--highlight);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 
-/* Playlist */
 .playlist-drawer {
   position: fixed;
-  bottom: 60px;
+  bottom: 55px;
   right: 10px;
-  width: 260px;
-  max-height: 300px;
+  width: 230px;
+  max-height: 240px;
   background: var(--player-bg);
   border-radius: 10px;
   overflow-y: auto;
   border: 1px solid var(--border-color);
-  padding: 1rem;
+  padding: 0.7rem;
   z-index: 1001;
 }
 
 .playlist-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem;
+  gap: 0.4rem;
+  padding: 0.3rem;
   cursor: pointer;
   border-radius: 6px;
   transition: background 0.2s;
@@ -219,9 +216,9 @@
 }
 
 .playlist-item img {
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
 }
 
 .playlist-info {
@@ -231,7 +228,7 @@
 
 .playlist-info h5 {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
@@ -240,11 +237,10 @@
 
 .playlist-info p {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   color: var(--text-secondary);
 }
 
-/* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .music-player {
     --player-bg: linear-gradient(90deg, #0F0521, #070313);

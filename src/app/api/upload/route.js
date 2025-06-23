@@ -1,7 +1,7 @@
 import { supabase } from '../../lib/supabase';
 
 const SUPPORTED_AUDIO_TYPES = [
-  'audio/mpeg', // MP3
+  'audio/mpeg',
   'audio/wav',
   'audio/ogg',
   'audio/x-m4a',
@@ -34,7 +34,7 @@ export async function POST(request) {
     );
   }
 
-  const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+  const MAX_FILE_SIZE = 20 * 1024 * 1024;
   if (file.size > MAX_FILE_SIZE) {
     return Response.json(
       { error: 'File size exceeds maximum limit of 20MB' },
@@ -57,7 +57,6 @@ export async function POST(request) {
       });
 
     if (storageError) {
-      console.error('❌ Storage upload error:', storageError);
       throw new Error(storageError.message || 'Upload to storage failed');
     }
 
@@ -66,7 +65,6 @@ export async function POST(request) {
       .getPublicUrl(fileName);
 
     const publicUrl = publicData?.publicUrl;
-
     const originalName = file.name.replace(/\.[^/.]+$/, '');
 
     const { data: dbData, error: dbError } = await supabase
@@ -86,7 +84,6 @@ export async function POST(request) {
 
     if (dbError) {
       await supabase.storage.from('music').remove([fileName]);
-      console.error('❌ Database insert error:', dbError);
       throw new Error(dbError.message || 'Insert into database failed');
     }
 
@@ -99,7 +96,6 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('❌ Upload error:', error);
     return Response.json(
       {
         error: error.message || 'Failed to upload file',

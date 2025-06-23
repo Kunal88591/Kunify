@@ -18,7 +18,6 @@ const MainContent = () => {
   const [sortOption, setSortOption] = useState('recent');
   const [localSongs, setLocalSongs] = useState(songs);
 
-  // Fetch songs
   const fetchSongs = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -37,7 +36,6 @@ const MainContent = () => {
     }
   }, [updatePlayerState]);
 
-  // Upload handler
   const handleFileUpload = useCallback(async (e) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -67,7 +65,6 @@ const MainContent = () => {
     }
   }, [localSongs, updatePlayerState]);
 
-  // Delete handler
   const handleDeleteSong = useCallback(async (songId, e) => {
     e.stopPropagation();
     if (!window.confirm('Are you sure you want to delete this song?')) return;
@@ -90,12 +87,9 @@ const MainContent = () => {
     }
   }, [localSongs, updatePlayerState, currentSong]);
 
-  // Handle click on song card
   const handleSongClick = useCallback((song) => {
     if (!isMounted) return;
     updatePlayerState({ currentSong: song, isPlaying: true });
-
-    // router.push(`/song/${song.id}`); // temporarily disabled
   }, [isMounted, updatePlayerState]);
 
   const filteredSongs = useMemo(() => 
@@ -154,7 +148,6 @@ const MainContent = () => {
       <div className="main-content">
         <div className="content-header">
           <h1 className="page-title">Your Music Library</h1>
-
           <div className="action-bar">
             <div className="search-container">
               <i className="fas fa-search search-icon"></i>
@@ -167,7 +160,6 @@ const MainContent = () => {
                 aria-label="Search songs"
               />
             </div>
-
             <div className="sort-container">
               <label htmlFor="sort-select">Sort by:</label>
               <select
@@ -182,7 +174,6 @@ const MainContent = () => {
                 <option value="artist">Artist</option>
               </select>
             </div>
-
             <button
               onClick={() => fileInputRef.current.click()}
               className="upload-btn"
@@ -245,7 +236,6 @@ const MainContent = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         updatePlayerState({ currentSong: song, isPlaying: true });
-
                       }}
                       aria-label={currentSong?.id === song.id ? 'Pause' : 'Play'}
                     >
