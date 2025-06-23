@@ -1,5 +1,5 @@
 'use client';
-import 'https://cdnjs.cloudflare.com/.../font-awesome.min.css';
+
 
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
