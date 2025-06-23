@@ -1,22 +1,30 @@
 'use client';
-import { useState } from 'react';
+
+import React from 'react';
 import Sidebar from '@/components/Sidebar';
 import MainContent from '@/components/MainContent';
 import MusicPlayer from '@/components/MusicPlayer';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
-  const [songs, setSongs] = useState([]);
-  const [currentSong, setCurrentSong] = useState(null);
-
   return (
-    <div className="main">
+    <main className="main-layout">
       <Sidebar />
-      <MainContent 
-        songs={songs} 
-        setSongs={setSongs} 
-        setCurrentSong={setCurrentSong} 
+      <MainContent />
+      <MusicPlayer />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
       />
-      <MusicPlayer currentSong={currentSong} />
-    </div>
+    </main>
   );
 }

@@ -1,146 +1,279 @@
-import React, { useState, useEffect, useRef } from 'react';
+'use client';
 
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { usePlayer } from '@/context/PlayerContext';
+import './MainContent.css';
 
-
-const MainContent = ({ setCurrentSong, setSongs, songs, currentSong }) => {
+const MainContent = () => {
+  const {
+    songs = [],
+    currentSong,
+    updatePlayerState
+  } = usePlayer();
+  
+  const [isMounted, setIsMounted] = useState(false);
   const fileInputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState('recent');
+  const [localSongs, setLocalSongs] = useState(songs);
 
-  const fetchSongs = async () => {
+  // Fetch songs
+  const fetchSongs = useCallback(async () => {
+    setIsLoading(true);
     try {
       const response = await fetch('/api/songs?limit=100');
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const result = await response.json();
-      if (result.success) {
-        setSongs(Array.isArray(result.data) ? result.data : []);
-      } else {
-        throw new Error(result.error || 'Unknown API error');
-      }
+      const loadedSongs = Array.isArray(result?.data) ? result.data : [];
+      setLocalSongs(loadedSongs);
+      updatePlayerState({ songs: loadedSongs });
     } catch (error) {
-      console.error('Error fetching songs:', error);
-      setSongs([]);
-      // Optional: Show error to user
-      // alert(`Failed to load songs: ${error.message}`);
+      console.error('Failed to fetch songs:', error);
+      setLocalSongs([]);
+      updatePlayerState({ songs: [] });
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [updatePlayerState]);
 
-  useEffect(() => {
-    fetchSongs();
-  }, []);
-
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('file', file);
+  // Upload handler
+  const handleFileUpload = useCallback(async (e) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        if (!response.ok) throw new Error('Upload failed');
+        return await response.json();
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          setSongs(prev => [result.data, ...(Array.isArray(prev) ? prev : [])]);
-        }
+      const results = await Promise.all(uploadPromises);
+      const successfulUploads = results.filter(Boolean).map(r => r.data);
+      
+      if (successfulUploads.length > 0) {
+        const updatedSongs = [...successfulUploads, ...localSongs];
+        setLocalSongs(updatedSongs);
+        updatePlayerState({ songs: updatedSongs });
       }
     } catch (error) {
       console.error('Upload error:', error);
-      // Optional: Show error to user
-      // alert(`Upload failed: ${error.message}`);
     }
-  };
+  }, [localSongs, updatePlayerState]);
 
-  const handleDeleteSong = async (songId, e) => {
-    e.stopPropagation(); // Prevent triggering song selection
+  // Delete handler
+  const handleDeleteSong = useCallback(async (songId, e) => {
+    e.stopPropagation();
+    if (!window.confirm('Are you sure you want to delete this song?')) return;
+
     try {
       const response = await fetch(`/api/delete/${songId}`, {
         method: 'DELETE',
       });
-
+      
       if (response.status === 204) {
-        setSongs(prev => prev.filter(song => song.id !== songId));
-        // If deleted song was playing, clear current song
-        if (currentSong && currentSong.id === songId) {
-          setCurrentSong(null);
-        }
+        const updatedSongs = localSongs.filter(song => song.id !== songId);
+        setLocalSongs(updatedSongs);
+        updatePlayerState({ 
+          songs: updatedSongs,
+          currentSong: currentSong?.id === songId ? null : currentSong
+        });
       }
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Failed to delete song');
     }
-  };
+  }, [localSongs, updatePlayerState, currentSong]);
+
+  // Handle click on song card
+  const handleSongClick = useCallback((song) => {
+    if (!isMounted) return;
+    updatePlayerState({ currentSong: song, isPlaying: true });
+
+    // router.push(`/song/${song.id}`); // temporarily disabled
+  }, [isMounted, updatePlayerState]);
+
+  const filteredSongs = useMemo(() => 
+    localSongs.filter(song => 
+      song?.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      song?.artist?.toLowerCase().includes(searchQuery.toLowerCase())
+    ),
+    [localSongs, searchQuery]
+  );
+
+  const sortedSongs = useMemo(() => {
+    return [...filteredSongs].sort((a, b) => {
+      if (sortOption === 'recent') {
+        return new Date(b?.createdAt || 0) - new Date(a?.createdAt || 0);
+      }
+      if (sortOption === 'title') {
+        return (a?.title || '').localeCompare(b?.title || '');
+      }
+      if (sortOption === 'artist') {
+        return (a?.artist || '').localeCompare(b?.artist || '');
+      }
+      return 0;
+    });
+  }, [filteredSongs, sortOption]);
+
+  useEffect(() => {
+    setIsMounted(true);
+    fetchSongs();
+  }, [fetchSongs]);
+
+  if (!isMounted) {
+    return (
+      <div className="main-content-wrapper">
+        <div className="main-content">
+          <div className="content-header-skeleton">
+            <div className="skeleton-title"></div>
+            <div className="skeleton-search"></div>
+            <div className="skeleton-sort"></div>
+            <div className="skeleton-upload"></div>
+          </div>
+          <div className="songs-grid-skeleton">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="song-card-skeleton">
+                <div className="skeleton-album-art"></div>
+                <div className="skeleton-song-info"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="main-content">
-      <div className="sticky-nav">
-        <div className="sticky-nav-icons">
-          <img src="/media/backward_icon.png" alt="Back" />
-          <img src="/media/forward_icon.png" alt="Forward" className="hide" />
-        </div>
-        <div className="sticky-nav-options">
-          <button className="badge nav-item hide">Upgrade</button>
-          <button className="badge nav-item dark-badge">
-            <i className="fa-regular fa-circle-down" style={{ marginRight: '5px' }}></i>
-            Install App
-          </button>
-          <i className="fa-regular fa-user"></i>
-        </div>
-      </div>
+    <div className="main-content-wrapper">
+      <div className="main-content">
+        <div className="content-header">
+          <h1 className="page-title">Your Music Library</h1>
 
-      <div style={{ margin: '1rem 0' }}>
-        <button
-          onClick={handleUploadClick}
-          className="badge"
-          style={{ background: '#1bd760', color: 'black' }}
-        >
-          <i className="fa-solid fa-upload"></i> Upload Song
-        </button>
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          accept="audio/*"
-          onChange={handleFileUpload}
-        />
-      </div>
-
-      <h2>Your Uploaded Songs</h2>
-      <div className="cards-container">
-        {Array.isArray(songs) && songs.map((song) => (
-          <div
-            key={song.id}
-            className="card"
-            onClick={() => setCurrentSong(song)}
-          >
-            <img
-              src="/media/default_cover.jpg"
-              className="card-img"
-              alt="Album Cover"
-            />
-            <div className="card-header">
-              <p className="card-title">{song.title}</p>
-              <button 
-                className="delete-button"
-                onClick={(e) => handleDeleteSong(song.id, e)}
-              >
-                <i className="fa-solid fa-trash"></i>
-              </button>
+          <div className="action-bar">
+            <div className="search-container">
+              <i className="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search songs..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+                aria-label="Search songs"
+              />
             </div>
-            <p className="card-info">{song.artist || 'Unknown Artist'}</p>
-          </div>
-        ))}
-      </div>
 
-      {/* Other sections (Recently Played, Trending, etc.) can go here */}
+            <div className="sort-container">
+              <label htmlFor="sort-select">Sort by:</label>
+              <select
+                id="sort-select"
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                className="sort-select"
+                aria-label="Sort songs"
+              >
+                <option value="recent">Recently Added</option>
+                <option value="title">Title</option>
+                <option value="artist">Artist</option>
+              </select>
+            </div>
+
+            <button
+              onClick={() => fileInputRef.current.click()}
+              className="upload-btn"
+              aria-label="Add songs"
+            >
+              <i className="fas fa-plus"></i> Add Songs
+              <input
+                type="file"
+                ref={fileInputRef}
+                accept="audio/*"
+                onChange={handleFileUpload}
+                hidden
+                multiple
+                aria-hidden="true"
+              />
+            </button>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div className="loading-container">
+            <div className="spinner"></div>
+            <p>Loading your music...</p>
+          </div>
+        ) : sortedSongs.length === 0 ? (
+          <div className="empty-state">
+            <i className="fas fa-music empty-icon"></i>
+            <h3>No songs found</h3>
+            <p>{searchQuery ? 'Try a different search' : 'Upload some music to get started'}</p>
+            <button
+              onClick={() => fileInputRef.current.click()}
+              className="upload-btn empty-btn"
+              aria-label="Upload first song"
+            >
+              <i className="fas fa-upload"></i> Upload Your First Song
+            </button>
+          </div>
+        ) : (
+          <div className="songs-grid">
+            {sortedSongs.map(song => (
+              <div
+                key={song.id}
+                className={`song-card ${currentSong?.id === song.id ? 'active' : ''}`}
+                onClick={() => handleSongClick(song)}
+                aria-label={`Play ${song.title}`}
+              >
+                <div className="album-art-container">
+                  <img
+                    src={song.cover || '/default_cover.jpg'}
+                    alt={`Album cover for ${song.title}`}
+                    className="album-art"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/default_cover.jpg';
+                    }}
+                  />
+                  <div className="card-overlay">
+                    <button
+                      className="play-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        updatePlayerState({ currentSong: song, isPlaying: true });
+
+                      }}
+                      aria-label={currentSong?.id === song.id ? 'Pause' : 'Play'}
+                    >
+                      <i className={`fas ${currentSong?.id === song.id ? 'fa-pause' : 'fa-play'}`}></i>
+                    </button>
+                  </div>
+                </div>
+                <div className="song-info">
+                  <h3 className="song-title" title={song.title}>{song.title}</h3>
+                  <p className="song-artist" title={song.artist || 'Unknown Artist'}>
+                    {song.artist || 'Unknown Artist'}
+                  </p>
+                  <div className="song-meta">
+                    <span className="song-duration">{song.duration || '--:--'}</span>
+                    <button
+                      className="delete-btn"
+                      onClick={(e) => handleDeleteSong(song.id, e)}
+                      aria-label="Delete song"
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
