@@ -1,0 +1,163 @@
+:root {
+    --primary-accent: #8A2BE2;
+    --secondary-accent: #1E90FF;
+    --background-dark: #0F0521;
+    --background-darker: #070313;
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.6);
+    --border-color: rgba(138, 43, 226, 0.3);
+    --input-bg: #1A0933;
+    --input-border: rgba(138, 43, 226, 0.5);
+    --button-bg: linear-gradient(90deg, #8A2BE2, #1E90FF);
+    --button-hover-bg: linear-gradient(90deg, #6B23B8, #1877E8);
+  }
+  
+  .admin-container {
+    max-width: 480px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: var(--background-darker);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-primary);
+  }
+  
+  .admin-container h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--primary-accent);
+  }
+  
+  .admin-form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  
+  .admin-form input,
+  .admin-form textarea {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1.5px solid var(--input-border);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+    resize: vertical;
+  }
+  
+  .admin-form input:focus,
+  .admin-form textarea:focus {
+    border-color: var(--primary-accent);
+    outline: none;
+  }
+  
+  .admin-form button {
+    width: 100%;
+    background: var(--button-bg);
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0 0 12px rgba(138, 43, 226, 0.6);
+  }
+  
+  .admin-form button:hover {
+    background: var(--button-hover-bg);
+  }
+  
+  .admin-message {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 600;
+    color: var(--primary-accent);
+  }
+  
+  @media (max-width: 520px) {
+    .admin-container {
+      margin: 1.5rem 1rem;
+      padding: 1.5rem;
+    }
+  }
+
+
+  .admin-page {
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(90deg, #1A0933 0%, #0F0521 100%);
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+  }
+  
+  .admin-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #8A2BE2;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .admin-input {
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: none;
+    background: #220B50;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: background 0.3s;
+  }
+  
+  .admin-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .admin-input:focus {
+    background: #331D7E;
+  }
+  
+  .admin-button {
+    background: linear-gradient(90deg, #8A2BE2, #1E90FF);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+    transition: transform 0.2s ease;
+  }
+  
+  .admin-button:hover {
+    transform: scale(1.05);
+  }
+  
+  .admin-message {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ADFF2F;
+  }
+  
+  

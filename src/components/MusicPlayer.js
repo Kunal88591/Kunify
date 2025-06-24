@@ -23,18 +23,29 @@ const MusicPlayer = () => {
   const [lyrics, setLyrics] = useState('');
 
   const audioRef = useRef(null);
-  const progressBarRef = useRef(null);
-  const animationRef = useRef(null);
+
+  const fetchLyrics = async (songId) => {
+    try {
+      const res = await fetch(`/api/lyrics/${songId}`);
+      const data = await res.json();
+      setLyrics(data.lyrics || 'No lyrics available');
+    } catch {
+      setLyrics('Lyrics could not be loaded.');
+    }
+  };
 
   useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !currentSong) return;
+
     const loadSong = async () => {
-      if (!currentSong?.public_url) return;
-      const audio = audioRef.current;
       try {
-        audio.src = currentSong.public_url;
+        audio.src = currentSong.public_url || currentSong.audio_url;
         await audio.load();
         setCurrentTime(0);
         setDuration(0);
+
+        fetchLyrics(currentSong.id);
 
         const playPromise = audio.play();
         if (playPromise !== undefined) {
@@ -45,8 +56,6 @@ const MusicPlayer = () => {
               console.warn('Autoplay prevented:', err);
             });
         }
-
-        fetchLyrics(currentSong.id);
       } catch (error) {
         console.error('Error loading song:', error);
       }
@@ -54,6 +63,18 @@ const MusicPlayer = () => {
 
     loadSong();
   }, [currentSong, updatePlayerState]);
+
+  const handleLoadedMetadata = () => {
+    setDuration(audioRef.current.duration || 0);
+  };
+
+  const handleSeek = (e) => {
+    const { left, width } = e.target.getBoundingClientRect();
+    const clickX = e.clientX - left;
+    const newTime = (clickX / width) * duration;
+    audioRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+  };
 
   const togglePlay = async () => {
     const audio = audioRef.current;
@@ -69,28 +90,6 @@ const MusicPlayer = () => {
     }
   };
 
-  const updateProgress = useCallback(() => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime || 0);
-      animationRef.current = requestAnimationFrame(updateProgress);
-    }
-  }, []);
-
-  useEffect(() => {
-    animationRef.current = requestAnimationFrame(updateProgress);
-    return () => cancelAnimationFrame(animationRef.current);
-  }, [updateProgress]);
-
-  const fetchLyrics = async (songId) => {
-    try {
-      const res = await fetch(`/api/lyrics/${songId}`);
-      const data = await res.json();
-      setLyrics(data.lyrics || 'No lyrics available');
-    } catch {
-      setLyrics('Lyrics could not be loaded.');
-    }
-  };
-
   const skipForward = () => (audioRef.current.currentTime += 10);
   const skipBackward = () => (audioRef.current.currentTime -= 10);
 
@@ -100,6 +99,12 @@ const MusicPlayer = () => {
     updatePlayerState({ isMuted: !isMuted });
   };
 
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    audioRef.current.volume = newVolume;
+    updatePlayerState({ volume: newVolume, isMuted: newVolume === 0 });
+  };
+
   const toggleRepeat = () => {
     audioRef.current.loop = !isRepeat;
     updatePlayerState({ isRepeat: !isRepeat });
@@ -107,19 +112,6 @@ const MusicPlayer = () => {
 
   const toggleShuffle = () => updatePlayerState({ isShuffle: !isShuffle });
   const toggleLyrics = () => setShowLyrics(!showLyrics);
-
-  const handleSeek = (e) => {
-    const clickX = e.nativeEvent.offsetX;
-    const width = e.target.clientWidth;
-    const newTime = (clickX / width) * duration;
-    audioRef.current.currentTime = newTime;
-  };
-
-  const handleVolumeChange = (e) => {
-    const newVolume = parseFloat(e.target.value);
-    audioRef.current.volume = newVolume;
-    updatePlayerState({ volume: newVolume, isMuted: newVolume === 0 });
-  };
 
   const playNextSong = useCallback(() => {
     if (!songs.length) return;
@@ -160,8 +152,9 @@ const MusicPlayer = () => {
     <div className={`music-player ${!currentSong ? 'hidden' : ''}`}>
       <audio
         ref={audioRef}
-        onLoadedMetadata={() => setDuration(audioRef.current.duration)}
+        onLoadedMetadata={handleLoadedMetadata}
         onEnded={playNextSong}
+        onTimeUpdate={() => setCurrentTime(audioRef.current.currentTime)}
       />
 
       <div className="player-top-section">
@@ -192,8 +185,11 @@ const MusicPlayer = () => {
       </div>
 
       <div className="player-controls">
-        <div className="progress-container" onClick={handleSeek} ref={progressBarRef}>
-          <div className="progress-bar" style={{ width: `${(currentTime / duration) * 100}%` }} />
+        <div className="progress-container" onClick={handleSeek}>
+          <div 
+            className="progress-bar , progress-thumb"
+            style={{ width: duration ? `${(currentTime / duration) * 100}%` : '0%' }}
+          />
           <span className="time-display">
             {formatTime(currentTime)} / {formatTime(duration)}
           </span>
