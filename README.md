@@ -13,7 +13,7 @@ Inspired by platforms like Spotify, Kunify enables users to **upload**, **manage
 
  ---
 
- (public/Preview2.png)
+ ![Web Screenshot](public/Preview2.png)
  
   **Mobile View**
   
