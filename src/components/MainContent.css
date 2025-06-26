@@ -106,7 +106,7 @@
   padding: 0.5rem 1rem;
   border-radius: var(--radius-full);
   border: none;
-  background: rgba(255, 255, 255, 0.08);
+  background :  #8A2BE2;
   color: var(--text-primary);
   cursor: pointer;
   font-size: 0.9rem;
