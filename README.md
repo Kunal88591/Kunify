@@ -84,8 +84,8 @@
 ## 👨‍💻 Author
 
 **Kunal Meena**  
-📫 [kunalofficial8859@gmail.com](mailto:kunalofficial8859@gmail.com)  
-🔗 [LinkedIn](https://linkedin.com/in/kunalmeena) • [GitHub](https://github.com/Kunal88591)
+📫 [kunalmeena1311@gmail.com](mailto:kunalmeena1311@gmail.com)  
+🔗 [LinkedIn](https://linkedin.com/in/kunal8859) • [GitHub](https://github.com/Kunal88591)
 
 ---
 
