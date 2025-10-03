@@ -1,0 +1,278 @@
+.download-manager {
+  background: var(--card-bg, #1a1a1a);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid var(--border-color, #333);
+}
+
+.download-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color, #333);
+}
+
+.download-header h3 {
+  margin: 0;
+  color: var(--text-primary, #ffffff);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.download-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.download-stats span {
+  color: var(--text-secondary, #a0a0a0);
+  font-size: 14px;
+}
+
+.clear-all-btn {
+  background: var(--danger-color, #ef4444);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clear-all-btn:hover {
+  background: var(--danger-hover, #dc2626);
+  transform: translateY(-1px);
+}
+
+.no-downloads {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary, #a0a0a0);
+}
+
+.no-downloads i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.no-downloads p {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.no-downloads small {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.downloaded-songs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.downloaded-song {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: var(--background-secondary, #2a2a2a);
+  border-radius: 8px;
+  border: 1px solid var(--border-color, #333);
+  transition: all 0.2s ease;
+}
+
+.downloaded-song:hover {
+  background: var(--background-hover, #333);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.song-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.song-cover {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--background-tertiary, #1a1a1a);
+}
+
+.song-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.song-details h4 {
+  margin: 0 0 4px 0;
+  color: var(--text-primary, #ffffff);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-details p {
+  margin: 0 0 6px 0;
+  color: var(--text-secondary, #a0a0a0);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.offline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--success-color, #10b981);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.offline-badge i {
+  font-size: 8px;
+}
+
+.song-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remove-btn {
+  background: var(--danger-color, #ef4444);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: var(--danger-hover, #dc2626);
+  transform: scale(1.05);
+}
+
+.remove-btn i {
+  font-size: 12px;
+}
+
+/* Download progress indicator */
+.download-progress {
+  position: relative;
+  background: var(--background-secondary, #2a2a2a);
+  border-radius: 4px;
+  height: 4px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.download-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color, #6366f1), var(--primary-hover, #4f46e5));
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .download-manager {
+    margin: 10px 0;
+    padding: 16px;
+  }
+  
+  .download-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .download-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .downloaded-song {
+    padding: 10px;
+  }
+  
+  .song-cover {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .song-details h4 {
+    font-size: 13px;
+  }
+  
+  .song-details p {
+    font-size: 11px;
+  }
+  
+  .remove-btn {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .remove-btn i {
+    font-size: 10px;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .download-manager {
+    --card-bg: #1a1a1a;
+    --border-color: #333;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --background-secondary: #2a2a2a;
+    --background-hover: #333;
+    --background-tertiary: #1a1a1a;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --danger-hover: #dc2626;
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+  }
+}
+
+/* Light theme adjustments */
+@media (prefers-color-scheme: light) {
+  .download-manager {
+    --card-bg: #ffffff;
+    --border-color: #e5e7eb;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --background-secondary: #f9fafb;
+    --background-hover: #f3f4f6;
+    --background-tertiary: #ffffff;
+    --success-color: #059669;
+    --danger-color: #dc2626;
+    --danger-hover: #b91c1c;
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+  }
+}
