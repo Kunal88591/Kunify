@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+
 import { usePlayer } from '@/context/PlayerContext';
 import './MainContent.css';
 
@@ -13,7 +14,7 @@ const MainContent = () => {
   const [showPlaceholders, setShowPlaceholders] = useState(true);
   const fileInputRef = useRef(null);
 
-  const { songs = [], currentSong, updatePlayerState, favorites = [], activeView } = usePlayer();
+  const { songs = [], currentSong, updatePlayerState, favorites = [], activeView, playlists = [], selectedPlaylist, setSelectedPlaylist, updatePlayerState: updatePlayerCtx } = usePlayer();
   const [localSongs, setLocalSongs] = useState(songs);
 
   const showToast = useCallback((message) => {
@@ -258,7 +259,36 @@ const MainContent = () => {
         </div>
 
         {/* Show only favorites if activeView is 'favorites' */}
-        {activeView === 'favorites' ? (
+        {activeView === 'playlist' && selectedPlaylist ? (
+          (() => {
+            const playlist = playlists.find(p => p.id === selectedPlaylist);
+            const playlistSongs = playlist && playlist.songIds && playlist.songIds.length > 0
+              ? playlist.songIds.map(id => songs.find(s => s.id === id)).filter(Boolean)
+              : songs.filter(song => !song.isPlaceholder);
+            return (
+              <div className="songs-section">
+                <h2 className="section-heading">🎵 {playlist?.name || 'Playlist'}</h2>
+                {playlistSongs.length === 0 ? (
+                  <div style={{ padding: '2rem', textAlign: 'center', color: '#888' }}>No songs in this playlist yet.</div>
+                ) : (
+                  <div className="songs-grid">
+                    {playlistSongs.map(song => (
+                      <SongCard
+                        key={song.id}
+                        song={song}
+                        isActive={currentSong?.id === song.id}
+                        onClick={handleSongClick}
+                        updatePlayerState={updatePlayerState}
+                        currentSong={currentSong}
+                        isPlaceholder={false}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })()
+        ) : activeView === 'favorites' ? (
           <div className="songs-section">
             <h2 className="section-heading">❤️ Your Favorite Songs</h2>
             {favorites.length === 0 ? (

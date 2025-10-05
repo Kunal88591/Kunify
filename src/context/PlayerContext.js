@@ -5,6 +5,13 @@ import { createContext, useContext, useState, useCallback, useEffect } from 'rea
 export const PlayerContext = createContext();
 
 export function PlayerProvider({ children }) {
+  // Example playlists with song IDs (replace with real data as needed)
+  const defaultPlaylists = [
+    { name: 'Workout Mix', id: 'workout', songIds: [] },
+    { name: 'Chill Vibes', id: 'chill', songIds: [] },
+    { name: 'Focus Flow', id: 'focus', songIds: [] },
+    { name: 'Road Trip', id: 'roadtrip', songIds: [] },
+  ];
   const [playerState, setPlayerState] = useState({
     songs: [],
     currentSong: null,
@@ -15,7 +22,13 @@ export function PlayerProvider({ children }) {
     isShuffle: false,
     favorites: [],
     activeView: 'home',
+    playlists: defaultPlaylists,
+    selectedPlaylist: null,
   });
+  // Set selected playlist
+  const setSelectedPlaylist = useCallback((playlistId) => {
+    setPlayerState((prev) => ({ ...prev, selectedPlaylist: playlistId, activeView: 'playlist' }));
+  }, []);
 
   // Load favorites from localStorage on mount
   useEffect(() => {
@@ -78,6 +91,7 @@ export function PlayerProvider({ children }) {
         setIsPlaying,
         toggleFavorite,
         setActiveView,
+        setSelectedPlaylist,
       }}
     >
       {children}
