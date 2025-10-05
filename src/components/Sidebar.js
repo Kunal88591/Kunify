@@ -5,7 +5,7 @@ import './Sidebar.css';
 import { usePlayer } from '@/context/PlayerContext';
 
 const Sidebar = () => {
-  const { activeView, setActiveView } = usePlayer();
+  const { activeView, setActiveView, playlists = [], setSelectedPlaylist, selectedPlaylist } = usePlayer();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -95,13 +95,14 @@ const Sidebar = () => {
         <div className="recent-playlists">
           <h3 className="section-title">Recent Playlists</h3>
           <ul className="playlist-list">
-            {['Workout Mix', 'Chill Vibes', 'Focus Flow', 'Road Trip'].map((playlist) => (
-              <li key={playlist}>
+            {playlists.map((playlist) => (
+              <li key={playlist.id}>
                 <button
-                  className="playlist-item"
-                  onClick={() => handleNavigation('playlist')}
+                  className={`playlist-item${selectedPlaylist === playlist.id && activeView === 'playlist' ? ' active' : ''}`}
+                  onClick={() => setSelectedPlaylist(playlist.id)}
+                  title={`Show songs in ${playlist.name}`}
                 >
-                  <span>{playlist}</span>
+                  <span>{playlist.name}</span>
                 </button>
               </li>
             ))}
