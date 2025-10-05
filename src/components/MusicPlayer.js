@@ -201,7 +201,7 @@ const MusicPlayer = () => {
         )}
       </div>
 
-      <div className="player-controls">
+  <div className="player-controls">
         <div className="progress-container" onClick={handleSeek}>
           <div 
             className="progress-bar , progress-thumb"
