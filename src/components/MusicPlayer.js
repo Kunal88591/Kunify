@@ -13,7 +13,9 @@ const MusicPlayer = () => {
     isMuted,
     isRepeat,
     isShuffle,
-    updatePlayerState
+    favorites = [],
+    updatePlayerState,
+    toggleFavorite
   } = usePlayer();
 
   const [currentTime, setCurrentTime] = useState(0);
@@ -159,7 +161,7 @@ const MusicPlayer = () => {
 
       <div className="player-top-section">
         <div className="now-playing">
-          <div className={`album-art ${isPlaying ? 'rotate' : ''}`}>
+          <div className={`album-art ${isPlaying ? 'rotate' : ''}`}> 
             <img
               src={currentSong?.cover || '/default_cover.jpg'}
               alt="Album art"
@@ -170,6 +172,21 @@ const MusicPlayer = () => {
             <h3>{currentSong?.title || 'No song selected'}</h3>
             <p>{currentSong?.artist || 'Unknown Artist'}</p>
           </div>
+          {/* Favorite icon for current song */}
+          {currentSong && (
+            <button
+              className="control-btn fav-btn"
+              title={favorites.some(s => s.id === currentSong.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+              onClick={() => toggleFavorite(currentSong)}
+              style={{ marginLeft: 12 }}
+            >
+              <i
+                className={favorites.some(s => s.id === currentSong.id) ? 'fas fa-heart' : 'far fa-heart'}
+                style={{ color: favorites.some(s => s.id === currentSong.id) ? '#e74c3c' : undefined, fontSize: 22 }}
+                aria-hidden="true"
+              />
+            </button>
+          )}
         </div>
 
         {showLyrics && (
@@ -256,6 +273,19 @@ const MusicPlayer = () => {
                   <p>{song.artist || 'Unknown Artist'}</p>
                 </div>
                 <span>{formatTime(song.duration)}</span>
+                {/* Favorite icon in playlist */}
+                <button
+                  className="control-btn fav-btn"
+                  title={favorites.some(s => s.id === song.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+                  onClick={e => { e.stopPropagation(); toggleFavorite(song); }}
+                  style={{ marginLeft: 8 }}
+                >
+                  <i
+                    className={favorites.some(s => s.id === song.id) ? 'fas fa-heart' : 'far fa-heart'}
+                    style={{ color: favorites.some(s => s.id === song.id) ? '#e74c3c' : undefined, fontSize: 18 }}
+                    aria-hidden="true"
+                  />
+                </button>
               </div>
             ))}
           </div>

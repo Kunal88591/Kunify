@@ -13,7 +13,7 @@ const MainContent = () => {
   const [showPlaceholders, setShowPlaceholders] = useState(true);
   const fileInputRef = useRef(null);
 
-  const { songs = [], currentSong, updatePlayerState } = usePlayer();
+  const { songs = [], currentSong, updatePlayerState, favorites = [], activeView } = usePlayer();
   const [localSongs, setLocalSongs] = useState(songs);
 
   const showToast = useCallback((message) => {
@@ -257,7 +257,29 @@ const MainContent = () => {
           </div>
         </div>
 
-        {searchQuery ? (
+        {/* Show only favorites if activeView is 'favorites' */}
+        {activeView === 'favorites' ? (
+          <div className="songs-section">
+            <h2 className="section-heading">❤️ Your Favorite Songs</h2>
+            {favorites.length === 0 ? (
+              <div style={{ padding: '2rem', textAlign: 'center', color: '#888' }}>No favorites yet. Click the heart icon on any song to add it here!</div>
+            ) : (
+              <div className="songs-grid">
+                {favorites.map(song => (
+                  <SongCard
+                    key={song.id}
+                    song={song}
+                    isActive={currentSong?.id === song.id}
+                    onClick={handleSongClick}
+                    updatePlayerState={updatePlayerState}
+                    currentSong={currentSong}
+                    isPlaceholder={false}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : searchQuery ? (
           <div className="songs-section">
             <h2 className="section-heading">🔍 Search Results</h2>
             <div className="songs-grid">
